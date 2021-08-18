@@ -1,0 +1,38 @@
+<div class="card mt-2">
+  <div class="card-header">
+    {{ pageTitle }}
+  </div>
+  <div class="card-body">
+    <button class="btn btn-success" (click)="showHideImage()">Show/Hide Image</button>
+    <input type="range" (change)="changeSizeImage($event)">
+    <input type="text" (keyup)="searchUser($event)">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nam</th>
+        <th scope="col" [hidden]="showImage">Image</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Address</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of users; let i = index">
+        <th scope="row">{{ i + 1}}</th>
+        <td>{{ user.name }}</td>
+        <td [hidden]="showImage">
+          <img *ngIf="user.avatar" [src]="user.avatar" alt="" [width]="imageSize">
+          <p *ngIf="!user.avatar">Khong co anh</p>
+        </td>
+        <td>{{ user.email}}</td>
+        <td>{{ user.phone}}</td>
+        <td>{{ user.address}}</td>
+        <td>
+          <button class="btn btn-danger" (click)="deleteUser(i)">Delete</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
