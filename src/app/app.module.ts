@@ -13,6 +13,13 @@ import { TopbarComponent } from './components/layouts/coree/topbar/topbar.compon
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { UserAddComponent } from './components/users/user-add/user-add.component';
+import { MessageComponent } from './components/share/message/message.component';
+import { InputSearchComponent } from './components/share/input-search/input-search.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UserDetailComponent } from './components/users/user-detail/user-detail.component';
+import {MatButtonModule} from "@angular/material/button";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatFormFieldModule} from "@angular/material/form-field";
 
 @NgModule({
   declarations: [
@@ -25,12 +32,19 @@ import { UserAddComponent } from './components/users/user-add/user-add.component
     TopbarComponent,
     DashboardComponent,
     LoginComponent,
-    UserAddComponent
+    UserAddComponent,
+    MessageComponent,
+    InputSearchComponent,
+    UserDetailComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatFormFieldModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

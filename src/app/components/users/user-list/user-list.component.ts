@@ -1,5 +1,7 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IUser} from "../IUser";
+import {MatDialog} from "@angular/material/dialog";
+import {UserDetailComponent} from "../user-detail/user-detail.component";
 
 @Component({
   selector: 'app-user-list',
@@ -7,6 +9,7 @@ import {IUser} from "../IUser";
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
+  text: string = '';
   pageTitle: string = 'Quan ly nguoi dung';
   imageSize: number = 100;
   showImage: boolean = false;
@@ -33,18 +36,13 @@ export class UserListComponent implements OnInit {
       address: "Ha Noi"
     }
   ];
-  constructor() { }
+  userFilter: IUser[] = [];
+
+  constructor(public dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
-
-  }
-
-  ngOnChanges() {
-
-  }
-
-  ngDoCheck() {
-
+    this.userFilter = this.users;
   }
 
   showHideImage() {
@@ -52,14 +50,34 @@ export class UserListComponent implements OnInit {
   }
 
   searchUser(event: any) {
-    let keyword = event.target.value;
-    console.log(keyword)
-    // search trong  mang users
+    let keyword = event.toLowerCase();
+    this.userFilter = (keyword) ? this.findUserByKeyword(keyword) : this.users;
   }
+
+  findUserByKeyword(keyword: string) {
+    return this.users.filter(user => {
+      return (user.name.toLowerCase().indexOf(keyword) != -1
+        || user.email.toLowerCase().indexOf(keyword) != -1);
+    })
+  }
+
+  shoDetail(index: number) {
+    let user = this.users[index];
+    const dialogRef = this.dialog.open(UserDetailComponent, {
+      width: '250px',
+      data: user
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
 
   deleteUser(index: number) {
     if (confirm('Are you sure?')) {
-      this.users.splice(index, 1)
+      this.users.splice(index, 1);
+      this.text = 'Delete user successfully!';
     }
   }
 

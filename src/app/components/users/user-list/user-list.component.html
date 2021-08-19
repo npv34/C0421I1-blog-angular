@@ -5,7 +5,8 @@
   <div class="card-body">
     <button class="btn btn-success" (click)="showHideImage()">Show/Hide Image</button>
     <input type="range" (change)="changeSizeImage($event)">
-    <input type="text" (keyup)="searchUser($event)">
+    <app-input-search (keyword)="searchUser($event)"></app-input-search>
+    <app-message [message]="text"></app-message>
     <table class="table table-striped">
       <thead>
       <tr>
@@ -19,7 +20,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let user of users; let i = index">
+      <tr *ngFor="let user of userFilter; let i = index">
         <th scope="row">{{ i + 1}}</th>
         <td>{{ user.name }}</td>
         <td [hidden]="showImage">
@@ -30,7 +31,9 @@
         <td>{{ user.phone}}</td>
         <td>{{ user.address}}</td>
         <td>
-          <button class="btn btn-danger" (click)="deleteUser(i)">Delete</button></td>
+          <button mat-raised-button (click)="shoDetail(i)">show Detail</button>
+          <button class="btn btn-danger" (click)="deleteUser(i)">Delete</button>
+        </td>
       </tr>
       </tbody>
     </table>
