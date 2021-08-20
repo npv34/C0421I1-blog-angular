@@ -7,35 +7,76 @@
     <input type="range" (change)="changeSizeImage($event)">
     <app-input-search (keyword)="searchUser($event)"></app-input-search>
     <app-message [message]="text"></app-message>
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nam</th>
-        <th scope="col" [hidden]="showImage">Image</th>
-        <th scope="col">Email</th>
-        <th scope="col">Phone</th>
-        <th scope="col">Address</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let user of userFilter; let i = index">
-        <th scope="row">{{ i + 1}}</th>
-        <td>{{ user.name }}</td>
-        <td [hidden]="showImage">
-          <img *ngIf="user.avatar" [src]="user.avatar" alt="" [width]="imageSize">
-          <p *ngIf="!user.avatar">Khong co anh</p>
-        </td>
-        <td>{{ user.email}}</td>
-        <td>{{ user.phone}}</td>
-        <td>{{ user.address}}</td>
-        <td>
-          <button mat-raised-button (click)="shoDetail(i)">show Detail</button>
-          <button class="btn btn-danger" (click)="deleteUser(i)">Delete</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="row">
+      <div class="col-12 col-md-4">
+          <form *ngIf="formAddUser" [formGroup]="formAddUser" (ngSubmit)="submitForm()">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control " formControlName="name" id="name" [ngClass]="(name?.invalid && (name?.dirty || name?.touched)) ? 'is-invalid' : '' "  >
+              <div *ngIf="name?.invalid && (name?.dirty || name?.touched) ">
+                  <p *ngIf="name?.errors?.required" class="text-danger">
+                    Truong name khong duoc de trong
+                  </p>
+                <p *ngIf="name?.errors?.minlength" class="text-danger">
+                  Truong name phai tu 2 ky tu tro len
+                </p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input type="email" class="form-control" formControlName="email" id="exampleInputEmail1" [ngClass]="(email?.invalid && email?.dirty) ? 'is-invalid' : ''" >
+              <div *ngIf="email?.invalid && email?.dirty ">
+                <p *ngIf="email?.errors?.required" class="text-danger">
+                  Truong email khong duoc de trong
+                </p>
+                <p *ngIf="email?.errors?.email" class="text-danger">
+                  Email khong dung dinh dang
+                </p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="address">Address</label>
+              <textarea formControlName="address"  class="form-control" id="address" cols="30" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="text" formControlName="phone" class="form-control" id="phone">
+            </div>
+            <button type="submit" [disabled]="formAddUser.invalid" class="btn btn-primary">Submit</button>
+          </form>
+      </div>
+      <div class="col-12 col-md-8">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nam</th>
+            <th scope="col" [hidden]="showImage">Image</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of userFilter; let i = index">
+            <th scope="row">{{ i + 1}}</th>
+            <td>{{ user.name }}</td>
+            <td [hidden]="showImage">
+              <img *ngIf="user.avatar" [src]="user.avatar" alt="" [width]="imageSize">
+              <p *ngIf="!user.avatar">Khong co anh</p>
+            </td>
+            <td>{{ user.email}}</td>
+            <td>{{ user.phone}}</td>
+            <td>
+              <button mat-raised-button (click)="shoDetail(i)">show Detail</button>
+              <button class="btn btn-danger" (click)="deleteUser(i)">Delete</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
   </div>
 </div>

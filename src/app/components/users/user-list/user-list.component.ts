@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {IUser} from "../IUser";
 import {MatDialog} from "@angular/material/dialog";
 import {UserDetailComponent} from "../user-detail/user-detail.component";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-user-list',
@@ -9,6 +10,7 @@ import {UserDetailComponent} from "../user-detail/user-detail.component";
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
+  formAddUser: FormGroup | undefined
   text: string = '';
   pageTitle: string = 'Quan ly nguoi dung';
   imageSize: number = 100;
@@ -38,10 +40,19 @@ export class UserListComponent implements OnInit {
   ];
   userFilter: IUser[] = [];
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog,
+              private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
+    // khoi tao form
+    this.formAddUser = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      address: ['', [Validators.required]],
+      phone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]]
+    })
+
     this.userFilter = this.users;
   }
 
@@ -84,6 +95,28 @@ export class UserListComponent implements OnInit {
   changeSizeImage(event: any) {
     this.imageSize = event.target.value;
     console.log(event.target)
+  }
+
+  submitForm()  {
+    let data = this.formAddUser?.value;
+    this.users.push(data);
+    this.formAddUser?.reset();
+  }
+
+  get name() {
+    return this.formAddUser?.get('name');
+  }
+
+  get email() {
+    return this.formAddUser?.get('email');
+  }
+
+  get address() {
+    return this.formAddUser?.get('address');
+  }
+
+  get phone() {
+    return this.formAddUser?.get('phone');
   }
 
 }
