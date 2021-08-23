@@ -20,6 +20,7 @@ import { UserDetailComponent } from './components/users/user-detail/user-detail.
 import {MatButtonModule} from "@angular/material/button";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
+import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {MatFormFieldModule} from "@angular/material/form-field";
     UserAddComponent,
     MessageComponent,
     InputSearchComponent,
-    UserDetailComponent
+    UserDetailComponent,
+    UserEditComponent
   ],
   imports: [
     BrowserModule,

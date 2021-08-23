@@ -70,6 +70,7 @@
             <td>
               <button mat-raised-button (click)="shoDetail(i)">show Detail</button>
               <button class="btn btn-danger" (click)="deleteUser(i)">Delete</button>
+              <button class="btn btn-primary"  [routerLink]="[ i, 'edit']">Edit</button>
             </td>
           </tr>
           </tbody>

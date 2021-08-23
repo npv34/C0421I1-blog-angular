@@ -44,4 +44,12 @@ export class UserService {
   destroyUser(index: number) {
     this.users.splice(index, 1);
   }
+
+  findByIndex(index: number) {
+    return this.users[index];
+  }
+
+  updateUser(index: number, data: IUser) {
+    this.users[index] = data
+  }
 }
