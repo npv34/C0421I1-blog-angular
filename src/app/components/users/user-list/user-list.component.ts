@@ -3,6 +3,7 @@ import {IUser} from "../IUser";
 import {MatDialog} from "@angular/material/dialog";
 import {UserDetailComponent} from "../user-detail/user-detail.component";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-user-list',
@@ -16,32 +17,12 @@ export class UserListComponent implements OnInit {
   imageSize: number = 100;
   showImage: boolean = false;
   message: string = "";
-  users: IUser[] = [
-    {
-      name: "Pham Van Nam",
-      email: "nam@gmail.com",
-      phone: "09080090",
-      address: "Ha Noi",
-      avatar: "https://cdn1.iconfinder.com/data/icons/avatar-97/32/avatar-02-512.png"
-    },
-    {
-      name: "Pham Van Quang",
-      email: "quang@gmail.com",
-      phone: "09080090",
-      address: "Ha Noi",
-      avatar: "https://cdn1.iconfinder.com/data/icons/avatar-97/32/avatar-02-512.png"
-    },
-    {
-      name: "Pham Thi Ninh",
-      email: "ninh@gmail.com",
-      phone: "09080090",
-      address: "Ha Noi"
-    }
-  ];
+  users: IUser[] = [];
   userFilter: IUser[] = [];
 
   constructor(public dialog: MatDialog,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -51,8 +32,8 @@ export class UserListComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       address: ['', [Validators.required]],
       phone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]]
-    })
-
+    });
+    this.users = this.userService.getAll();
     this.userFilter = this.users;
   }
 
@@ -62,14 +43,7 @@ export class UserListComponent implements OnInit {
 
   searchUser(event: any) {
     let keyword = event.toLowerCase();
-    this.userFilter = (keyword) ? this.findUserByKeyword(keyword) : this.users;
-  }
-
-  findUserByKeyword(keyword: string) {
-    return this.users.filter(user => {
-      return (user.name.toLowerCase().indexOf(keyword) != -1
-        || user.email.toLowerCase().indexOf(keyword) != -1);
-    })
+    this.userFilter = (keyword) ? this.userService.findUserByKeyword(keyword) : this.users;
   }
 
   shoDetail(index: number) {
@@ -87,7 +61,8 @@ export class UserListComponent implements OnInit {
 
   deleteUser(index: number) {
     if (confirm('Are you sure?')) {
-      this.users.splice(index, 1);
+      this.userService.destroyUser(index);
+      this.users = this.userService.getAll();
       this.text = 'Delete user successfully!';
     }
   }
